@@ -2,26 +2,174 @@
 <html lang="en">
   <head>
     <%- include("../partials/header") %>
+    <style>
+      .pokedex-container {
+        background: linear-gradient(145deg, #E3350D, #8B0000);
+        border-radius: 25px;
+        border: 8px solid #B22222;
+        padding: 20px;
+        max-width: 500px;
+        margin: 0 auto;
+        position: relative;
+        font-family: 'Orbitron', sans-serif;
+        color: #fff;
+        box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
+      }
+
+      .pokedex-light {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        width: 30px;
+        height: 30px;
+        background: linear-gradient(145deg, #90EE90, #006400);
+        border-radius: 50%;
+        box-shadow: 0 0 15px rgba(144, 238, 144, 0.8), inset 0 2px 5px rgba(0, 0, 0, 0.5);
+        border: 3px solid #fff;
+      }
+
+      .indicator-light {
+        position: absolute;
+        right: 15px;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        border: 2px solid #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+      }
+
+      .light-yellow {
+        background: radial-gradient(circle, #FFD700, #B8860B);
+        top: 18px;
+        box-shadow: 0 0 12px rgba(255, 215, 0, 0.7);
+      }
+
+      .light-blue {
+        background: radial-gradient(circle, #1E90FF, #000080);
+        top: 40px;
+        box-shadow: 0 0 12px rgba(30, 144, 255, 0.7);
+      }
+
+      .light-red {
+        background: radial-gradient(circle, #FF6347, #8B0000);
+        top: 62px;
+        box-shadow: 0 0 12px rgba(255, 99, 71, 0.7);
+      }
+
+      .pokemon-card {
+        background: linear-gradient(145deg, #f0f0f0, #bbb);
+        border: 6px solid #333;
+        border-radius: 24px;
+        padding: 20px;
+        text-align: center;
+        box-shadow: inset 0px 4px 8px rgba(0, 0, 0, 0.5);
+      }
+
+      .pokemon-title {
+        background: linear-gradient(145deg, #FFD700, #DAA520);
+        color: #333;
+        padding: 10px;
+        border-radius: 18px 18px 0 0;
+        font-size: 1.5rem;
+        font-weight: bold;
+        text-transform: capitalize;
+        text-shadow: 0px 2px 3px rgba(0, 0, 0, 0.4);
+        margin-bottom: 15px;
+      }
+
+      .pokemon-image-container {
+        position: relative;
+        width: 220px;
+        height: 220px;
+        margin: 0 auto 20px;
+        border: 5px solid #A040A0;
+        border-radius: 16px;
+        overflow: hidden;
+        background: #000;
+        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.7);
+      }
+
+      .pokemon-image-container:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle, rgba(160, 64, 160, 0.4), rgba(160, 64, 160, 0) 70%);
+        animation: holo-effect 6s infinite;
+        border-radius: 16px;
+      }
+
+      @keyframes holo-effect {
+        0% { transform: translate(-50%, -50%) rotate(0deg); }
+        100% { transform: translate(-50%, -50%) rotate(360deg); }
+      }
+
+      .pokemon-details {
+        text-align: left;
+        padding: 15px;
+        background: #222;
+        color: #fff;
+        border-radius: 12px;
+        font-family: 'Orbitron', sans-serif;
+      }
+
+      .type-badge {
+        display: inline-block;
+        padding: 5px 12px;
+        font-size: 0.9rem;
+        font-weight: bold;
+        color: white;
+        border-radius: 12px;
+        margin: 2px;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
+      }
+
+      .type-fire { background-color: #FF6F61; box-shadow: 0 0 8px rgba(255, 111, 97, 0.7); }
+      .type-water { background-color: #3399FF; box-shadow: 0 0 8px rgba(51, 153, 255, 0.7); }
+      .type-grass { background-color: #78C850; box-shadow: 0 0 8px rgba(120, 200, 80, 0.7); }
+      .type-electric { background-color: #FFDD57; box-shadow: 0 0 8px rgba(255, 221, 87, 0.7); }
+      .type-psychic { background-color: #F85888; box-shadow: 0 0 8px rgba(248, 88, 136, 0.7); }
+      .type-normal { background-color: #A8A77A; }
+      .type-poison { background-color: #A040A0; }
+    </style>
   </head>
   <body class="bg-gray-100 text-gray-800">
     <div class="container mx-auto p-5">
-      <h1 class="text-3xl font-bold text-center mb-5 capitalize">
-        <%= pokemon.name %>
-      </h1>
-      <div class="flex flex-col items-center">
-        <img
-          src="<%= pokemon.sprites.front_default %>"
-          alt="<%= pokemon.name %>"
-          class="w-40 h-40"
-        />
-        <p class="text-lg font-semibold">Height: <%= pokemon.height %></p>
-        <p class="text-lg font-semibold">Weight: <%= pokemon.weight %></p>
-        <p class="text-lg font-semibold">
-          Type: <%= pokemon.types.map(t => t.type.name).join(', ') %>
-        </p>
+      <div class="pokedex-container">
+        <div class="pokedex-light"></div>
+        <div class="indicator-light light-yellow"></div>
+        <div class="indicator-light light-blue"></div>
+        <div class="indicator-light light-red"></div>
+
+        <div class="pokemon-card">
+          <div class="pokemon-title"><%= pokemon.name %></div>
+          <div class="pokemon-image-container">
+            <img
+              src="<%= pokemon.sprites.front_default %>"
+              alt="<%= pokemon.name %>"
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <div class="pokemon-details">
+            <p class="text-lg font-semibold">Height: <%= pokemon.height %></p>
+            <p class="text-lg font-semibold">Weight: <%= pokemon.weight %></p>
+            <div>
+              <p class="text-lg font-semibold">Type:</p>
+              <% pokemon.types.forEach(type => { %>
+                <span class="type-badge type-<%= type.type.name %>">
+                  <%= type.type.name %>
+                </span>
+              <% }) %>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="text-center mt-5">
-        <a href="/" class="px-4 py-2 bg-blue-500 text-white rounded-lg">Back</a>
+        <a href="/" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
+          Back
+        </a>
       </div>
     </div>
     <%- include("../partials/footer") %>
